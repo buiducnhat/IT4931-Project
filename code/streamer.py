@@ -2,8 +2,8 @@ from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark.sql import SQLContext
 from pyspark.sql.types import *
-from pyspark.sql.functions import col, count
-from pyspark.sql.types import StringType,DoubleType
+from pyspark.sql.functions import col
+from pyspark.sql.types import StringType
 
 import sys
 
@@ -25,20 +25,21 @@ schema = StructType([
     # Add more fields as required
 ])
 
-df = spark.read.csv("hdfs://10.157.60.165:9000/GasData/dataCsv/*.csv", header=True, schema=schema)
+df = spark.read.csv(
+    "hdfs://localhost:9000/GasData/dataCsv/*.csv", header=True, schema=schema)
 
 df.printSchema()
-print('Số bản ghi %d' %df.count())
+print('Số bản ghi %d' % df.count())
 print(df.count())
 # df.where()
 df.show(20, False)
 
-#list all fuel type
+# list all fuel type
 df.select('fuelType').distinct().show(20, False)
-df2 = df.withColumn("y",df.y.cast('double'))
+df2 = df.withColumn("y", df.y.cast('double'))
 # get max y
 
 if len(sys.argv) > 1:
-    print('Số bản ghi %s' %sys.argv[1])
+    print('Số bản ghi %s' % sys.argv[1])
     print(df.where(col('fuelType') == sys.argv[1]).count())
     df.where(col('fuelType') == sys.argv[1]).show(20, False)

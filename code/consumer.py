@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from pyspark.context import SparkContext
 from pyspark.sql.session import SparkSession
-from pyspark.sql import SQLContext
+from pyspark.sql.types import *
 import json
 
 sc = SparkContext('local')
