@@ -4,7 +4,7 @@ import time
 import sys
 from kafka import KafkaProducer
 
-producer = KafkaProducer(bootstrap_servers=['10.157.60.165:9092'],value_serializer=lambda K:json.dumps(K).encode('utf-8'))
+producer = KafkaProducer(bootstrap_servers=['localhost:9092'],value_serializer=lambda K:json.dumps(K).encode('utf-8'))
 fuelType = None
 
 def addition(n):
@@ -31,7 +31,7 @@ def main():
         if response.json() != None:
             print('fuelType: %s', fuelType)
             data = response.json().get("series", [{}])[0].get("data", [])
-            # res.extend(data)    
+
             print('Length:', len(data) or 0)
             tmp = map(addition, data)
             res.extend(list(tmp))
